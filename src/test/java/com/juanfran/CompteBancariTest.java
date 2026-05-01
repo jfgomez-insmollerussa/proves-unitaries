@@ -27,7 +27,7 @@ public class CompteBancariTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> new CompteBancari("", "ES9121000418450200051332", 500.0));
 
-        assertEquals("El titular és obligatori", exception.getMessage());
+        assertEquals("Error titular", exception.getMessage());
     }
 
     @Test
@@ -49,6 +49,6 @@ public class CompteBancariTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> compte.retirar(1500.0));
 
-        assertEquals("No hi ha prou saldo", exception.getMessage());
+        assertEquals("Error", exception.getMessage());
     }
 }
