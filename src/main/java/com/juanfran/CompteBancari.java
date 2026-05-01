@@ -26,7 +26,7 @@ public class CompteBancari {
         if (quantitat > saldo) {
             throw new IllegalArgumentException("No hi ha prou saldo");
         }
-        saldo += quantitat;
+        saldo -= quantitat;
     }
 
     public String getEstatSaldo() {
