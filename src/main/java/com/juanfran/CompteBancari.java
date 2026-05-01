@@ -2,78 +2,64 @@ package com.juanfran;
 
 public class CompteBancari {
 
-    private String titular;
-    private String iban;
+    private final String titular;
+    private final String iban;
     private double saldo;
 
     public CompteBancari(String titular, String iban, double saldoInicial) {
-        if (titular == null || titular.equals("")) {
-            throw new IllegalArgumentException("Error titular");
-        }
-        if (iban == null || iban.equals("")) {
-            throw new IllegalArgumentException("Error iban");
-        }
-        if (saldoInicial < 0) {
-            throw new IllegalArgumentException("Error saldo");
-        }
+        validarTitular(titular);
+        validarIban(iban);
+        validarSaldoInicial(saldoInicial);
 
         this.titular = titular;
         this.iban = iban;
         this.saldo = saldoInicial;
     }
 
-    public void ingressar(double q) {
-        if (q <= 0) {
-            throw new IllegalArgumentException("Error");
-        } else {
-            System.out.println("Ingrés iniciat");
-            saldo = saldo + q;
-            System.out.println("S'ha ingressat " + q);
-            System.out.println("Saldo actual " + saldo);
-            if (saldo < 1000) {
-                System.out.println("Saldo baix");
-            } else if (saldo >= 1000 && saldo < 5000) {
-                System.out.println("Saldo normal");
-            } else {
-                System.out.println("Saldo alt");
-            }
-            System.out.println("Ingrés acabat");
-        }
+    public void ingressar(double quantitat) {
+        validarQuantitatPositiva(quantitat);
+        saldo += quantitat;
     }
 
-    public void retirar(double q) {
-        if (q <= 0) {
-            throw new IllegalArgumentException("Error");
-        } else {
-            if (q > saldo) {
-                throw new IllegalArgumentException("Error");
-            } else {
-                System.out.println("Retirada iniciada");
-                saldo = saldo - q;
-                System.out.println("S'ha retirat " + q);
-                System.out.println("Saldo actual " + saldo);
-                if (saldo < 1000) {
-                    System.out.println("Saldo baix");
-                } else if (saldo >= 1000 && saldo < 5000) {
-                    System.out.println("Saldo normal");
-                } else {
-                    System.out.println("Saldo alt");
-                }
-                System.out.println("Retirada acabada");
-            }
+    public void retirar(double quantitat) {
+        validarQuantitatPositiva(quantitat);
+        if (quantitat > saldo) {
+            throw new IllegalArgumentException("No hi ha prou saldo");
         }
+        saldo -= quantitat;
     }
 
-    public void mostrarDades() {
-        System.out.println("Titular: " + titular);
-        System.out.println("IBAN: " + iban);
-        System.out.println("Saldo: " + saldo);
+    public String getEstatSaldo() {
         if (saldo < 1000) {
-            System.out.println("Saldo baix");
-        } else if (saldo >= 1000 && saldo < 5000) {
-            System.out.println("Saldo normal");
-        } else {
-            System.out.println("Saldo alt");
+            return "Saldo baix";
+        }
+        if (saldo < 5000) {
+            return "Saldo normal";
+        }
+        return "Saldo alt";
+    }
+
+    private void validarTitular(String titular) {
+        if (titular == null || titular.trim().isEmpty()) {
+            throw new IllegalArgumentException("El titular és obligatori");
+        }
+    }
+
+    private void validarIban(String iban) {
+        if (iban == null || iban.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'IBAN és obligatori");
+        }
+    }
+
+    private void validarSaldoInicial(double saldoInicial) {
+        if (saldoInicial < 0) {
+            throw new IllegalArgumentException("El saldo inicial no pot ser negatiu");
+        }
+    }
+
+    private void validarQuantitatPositiva(double quantitat) {
+        if (quantitat <= 0) {
+            throw new IllegalArgumentException("La quantitat ha de ser positiva");
         }
     }
 
